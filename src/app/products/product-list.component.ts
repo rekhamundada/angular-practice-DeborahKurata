@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
 import { IProduct } from './product';
 import { ProductService } from './product.service';
 import { StarComponent } from '../shared/star.component';
+
 @Component({
   // selector: 'pm-products',
   templateUrl: 'product-list.component.html',
@@ -27,7 +29,9 @@ export class ProductListComponent implements OnInit {
   filteredProducts: IProduct[];
   products: IProduct[] = [];
 
-constructor(private productService: ProductService) {
+constructor(
+  private productService: ProductService,
+  ) {
   //this.listFilter = 'cart';
 }
 
