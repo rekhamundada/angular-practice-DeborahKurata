@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { IProduct } from './product';
 import { ProductService } from './product.service';
 import { StarComponent } from '../shared/star.component';
+import { NgModel } from '@angular/forms';
 
 @Component({
   // selector: 'pm-products',
@@ -17,28 +19,27 @@ export class ProductListComponent implements OnInit {
   showImage: boolean= false;
   errorMessage: string;
 
- _listFilter: string;
-  get listFilter(): string {
-    return this._listFilter;
-  }
-  set listFilter(value: string){
-    this._listFilter = value;
-    this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
-  }
-
   filteredProducts: IProduct[];
   products: IProduct[] = [];
+
+  includeDetail: boolean = true;
 
 constructor(
   private productService: ProductService,
   ) {
-  //this.listFilter = 'cart';
 }
-
-performFilter(filterBy: string): IProduct[] {
-  filterBy = filterBy.toLocaleLowerCase();
-    return this.products.filter((product: IProduct) =>
-      product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1 );
+// performFilter(filterBy: string): IProduct[] {
+//   filterBy = filterBy.toLocaleLowerCase();
+//     return this.products.filter((product: IProduct) =>
+//       product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1 );
+// }
+performFilter(filterBy?: string): void {
+  if (filterBy) {
+      this.filteredProducts = this.products.filter((product: IProduct) =>
+          product.productName.toLocaleLowerCase().indexOf(filterBy.toLocaleLowerCase()) !== -1);
+  } else {
+      this.filteredProducts = this.products;
+  }
 }
  toggleImage(): void {
   this.showImage = !this.showImage;
@@ -50,12 +51,17 @@ performFilter(filterBy: string): IProduct[] {
       products => {
         this.products = products;
         this.filteredProducts = this.products;
+        // this.performFilter()
       },
       error => this.errorMessage = <any>error
     );
-
-
  }
+//  ngAfterViewInit() {
+//   this.filterInput.valueChanges
+//     .subscribe(
+//       () => this.performFilter(this.listFilter)
+//     );
+//  }
  onRatingClicked(message: string): void {
    this.pageTitle = 'Product List: ' + message;
  }
