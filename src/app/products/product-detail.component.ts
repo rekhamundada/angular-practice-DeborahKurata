@@ -4,8 +4,6 @@ import { ActivatedRoute , Router} from '@angular/router';
 import { IProduct } from './product';
 import { ProductService } from './product.service';
 
-
-
 @Component({
   // selector: 'pm-product-detail',
   templateUrl: './product-detail.component.html',

@@ -1,4 +1,6 @@
-[
+
+//const products: IProduct[] = [
+    [
     {
         "productId": 1,
         "productName": "Leaf Rake",
@@ -20,6 +22,7 @@
         "imageUrl": "http://openclipart.org/image/300px/svg_to_png/58471/garden_cart.png"
     },
     {
+
         "productId": 5,
         "productName": "Hammer",
         "productCode": "TBX-0048",

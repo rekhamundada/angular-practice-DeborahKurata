@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'pm-criteria',
@@ -11,11 +11,23 @@ export class CriteriaComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() displayDetail: boolean;
 
   hitMessage: string;
-  listFilter: string;
+ // listFilter: string;
   @ViewChild('filterElement') filterElementRef: ElementRef;
+  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 
+  private _listFilter: string;
+  // backing variable to retain the value
+  get listFilter(): string {
+        return this._listFilter;
+       // returns the value of backing varaible
+      }
+  set listFilter(value: string){
+    // sets the backing variable using the passed in value
+   // notifies the component when the user changes the value
+      this._listFilter = value;
+      this.valueChange.emit(value);
+     }
   constructor() { }
-
   ngOnInit() {
   }
   ngAfterViewInit() {
@@ -30,19 +42,5 @@ export class CriteriaComponent implements OnInit, AfterViewInit, OnChanges {
       this.hitMessage = 'Hits:' + this.hitCount;
     }
   }
-  
-  }
+}
 
-//   // backing variable to retain the value
-//  private _listFilter: string;
-
-//   get listFilter(): string {
-//     return this._listFilter;
-//     // returns the value of backing varaible
-//   }
-//   set listFilter(value: string){
-//     // sets the backing variable using the passed in value
-//     // notifies the component when the user changes the value
-//     this._listFilter = value;
-//     this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
-//   }

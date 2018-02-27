@@ -6,7 +6,8 @@ import { RouterModule , Router} from '@angular/router';
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './home/welcome.component';
 import { ProductModule } from './products/product.module';
-
+import { ProductData } from './products/product-data';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ProductModule } from './products/product.module';
     {path: '', redirectTo: 'welcome', pathMatch: 'full'},
     {path: '**', redirectTo: 'welcome', pathMatch: 'full'}
     ]),
-    ProductModule
+    ProductModule,
+    HttpClientInMemoryWebApiModule.forRoot(ProductData),
   ],
  // providers: [ProductService],
   bootstrap: [AppComponent]

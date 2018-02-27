@@ -1,10 +1,12 @@
 import { Subscription } from 'rxjs/Subscription';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 import { IProduct } from './product';
 import { ProductService } from './product.service';
 import { StarComponent } from '../shared/star.component';
 import { NgModel } from '@angular/forms';
+import { CriteriaComponent } from '../shared/criteria/criteria.component';
+import { ProductParameterService } from './product-parameter.service';
 
 @Component({
   // selector: 'pm-products',
@@ -12,27 +14,30 @@ import { NgModel } from '@angular/forms';
   styleUrls: ['product-list.component.css']
 })
 
-export class ProductListComponent implements OnInit {
-  pageTitle: string= 'Product list';
+export class ProductListComponent implements OnInit, AfterViewInit {
+
+  pageTitle: string = 'Product list';
   imageWidth: number= 50;
   imageHeight: number= 2;
-  showImage: boolean= false;
   errorMessage: string;
-
-  filteredProducts: IProduct[];
-  products: IProduct[] = [];
-
   includeDetail: boolean = true;
+ // showImage: boolean= false;
+ // parentListFilter: string;
+  filteredProducts: IProduct[];
+  products: IProduct[];
 
+  @ViewChild(CriteriaComponent) filterComponent: CriteriaComponent;
+get showImage(): boolean {
+  return this.productParameterService.showImage;
+}
+set showImage(value: boolean) {
+  this.productParameterService.showImage = value;
+}
 constructor(
   private productService: ProductService,
+  private productParameterService: ProductParameterService
   ) {
 }
-// performFilter(filterBy: string): IProduct[] {
-//   filterBy = filterBy.toLocaleLowerCase();
-//     return this.products.filter((product: IProduct) =>
-//       product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1 );
-// }
 performFilter(filterBy?: string): void {
   if (filterBy) {
       this.filteredProducts = this.products.filter((product: IProduct) =>
@@ -44,24 +49,25 @@ performFilter(filterBy?: string): void {
  toggleImage(): void {
   this.showImage = !this.showImage;
  }
+ ngAfterViewInit(): void {
+  // this.parentListFilter = this.filterComponent.listFilter;
+}
  ngOnInit(): void {
    console.log('implemneting lifecycle hook OnInit');
    this.productService.getProducts()
     .subscribe(
-      products => {
+      (products: IProduct[]) => {
         this.products = products;
-        this.filteredProducts = this.products;
-        // this.performFilter()
+        this.filterComponent.listFilter = this.productParameterService.filterBy;
+      // this.performFilter(this.parentListFilter);
       },
       error => this.errorMessage = <any>error
     );
  }
-//  ngAfterViewInit() {
-//   this.filterInput.valueChanges
-//     .subscribe(
-//       () => this.performFilter(this.listFilter)
-//     );
-//  }
+ onValueChange(value: string): void {
+   this.productParameterService.filterBy = value;
+   this.performFilter(value);
+ }
  onRatingClicked(message: string): void {
    this.pageTitle = 'Product List: ' + message;
  }

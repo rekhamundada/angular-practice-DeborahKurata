@@ -9,13 +9,14 @@
     <div class='row'>
       <pm-criteria #filterCriteria class='col-md-10'
          [displayDetail]='includeDetail'
-         [hitCount]='filteredProducts?.length'>
+         [hitCount]='filteredProducts?.length'
+         (valueChange)='onValueChange($event)'>
       </pm-criteria>
     </div>
 
     <div class='table-responsive'>
       <table class = 'table'
-        *ngIf='products && products.length'>
+          *ngIf='products?.length'>
         <thead>
           <tr>
             <th>
@@ -24,10 +25,11 @@
               </button>
             </th>
             <th>Product</th>
-            <th>productCode</th>
+            <th>Code</th>
             <th>Available</th>
             <th>price</th>
             <th>5 Star Rating</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -40,14 +42,21 @@
                [style.margin.px]='imageHeight'>
             </td>
             <td>
-              <a [routerLink]="['/products',product.productId]">{{product.productName}}
+              <a [routerLink]="['/products',product.id]">{{product.productName}}
               </a></td>
             <td>{{product.productCode | lowercase |  ConvertToSpaces:'-'}}</td>
             <td>{{product.releaseDate}}</td>
             <td>{{product.price | currency:'USD':true: '1.2-2'}}</td>
             <td><pm-star
               [rating]='product.starRating'
-              (ratingClicked)='onRatingClicked($event)'></pm-star></td>
+              (ratingClicked)='onRatingClicked($event)'></pm-star>
+            </td>
+            <td>
+              <a class="btn btn-primary"
+                  [routerLink]="['/products', product.id, 'edit']">
+                    Edit
+                </a>
+            </td>
           </tr>
         </tbody>
       </table>
