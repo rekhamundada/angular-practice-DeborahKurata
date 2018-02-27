@@ -40,7 +40,7 @@
   </div>
 </div> -->
 
-<div class='panel panel-primary' *ngIf='product'>
+ <div class='panel panel-primary' *ngIf='product'>
     <div class='panel-heading'>
         {{pageTitle + ': ' + product.productName}}
     </div>
@@ -96,7 +96,8 @@
             Edit
         </a>
     </div>
-</div>
+</div> 
 <div *ngIf='errorMessage' class='alert alert-danger'>
     Error: {{ errorMessage }}
 </div>
+
