@@ -15,12 +15,12 @@ export class ProductService  {
 // private productsUrl  = './api/products/products.json';
 private productsUrl = 'api/products';
 private products: IProduct[];
- private selectedProductSource = new BehaviorSubject<IProduct | null>(null);
+private selectedProductSource = new BehaviorSubject<IProduct | null>(null);
  // below $ sign indicates it is an observable and not a simple property and we are making it read only observable from subject
  selectedProductChanges$ = this.selectedProductSource.asObservable();
 
   constructor(private http: HttpClient) { }
-  
+
   changeSelectedProduct(selectedProduct: IProduct | null): void {
     this.selectedProductSource.next(selectedProduct);
 }
@@ -83,7 +83,7 @@ private products: IProduct[];
         imageUrl: ''
     };
 }
-private createPrioduct(product: IProduct, headers: HttpHeaders): Observable<IProduct> {
+private createProduct(product: IProduct, headers: HttpHeaders): Observable<IProduct> {
   product.id = null;
   return this.http.post<IProduct>(this.productsUrl, product,  { headers: headers} )
   .pipe(
